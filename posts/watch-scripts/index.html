@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <title>
+    Launching Scripts from a Smartwatch | Jacob Rodal
+  </title>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/modern-normalize@0.6.0/modern-normalize.css"
+  />
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/style.min.f7761d111b74dd5c07f0111decee92938c12abc42e0fd319e1a07483e248b54e.css" integrity="sha256-93YdERt03VwH8BEd7O6Sk4wSq8QuD9MZ4aB0g&#43;JItU4=" />
+
+  
+  
+    
+  
+</head>
+
+    <body>
+        <header id="header">
+  <div class="header_container">
+    <h1 class="sitetitle">
+      <a href="" title="Jacob Rodal">Jacob Rodal</a>
+    </h1>
+    <nav class="navbar">
+      <ul>
+        <li><a href="47">Home</a></li>
+        
+          <li>
+            <a href="/tags/">
+              
+              <span>Tags</span>
+            </a>
+          </li>
+        
+          <li>
+            <a href="/archives/">
+              
+              <span>Archives</span>
+            </a>
+          </li>
+        
+        <li class="hide-sm"><a href="/index.xml" type="application/rss+xml">RSS</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+        
+<section id="main">
+  <article class="post content">
+    <h2 class="title">Launching Scripts from a Smartwatch</h2>
+    <div class="post_content">
+      <p>This article explains how to execute shell commands on a Linux computer from an android smartphone and a WearOS smartwatch.</p>
+<h2 id="tldr">TL;DR</h2>
+<ul>
+<li>Linux computers can communicate with android smartphones using <a href="https://kdeconnect.kde.org/">KDEConnect</a>.</li>
+<li>If you purchase the tasker android app for $3.49, you can set up a notification task that can be pushed to your smartwatch.</li>
+<li>I was awarded the r/unixporn post of the month for a demo video that I posted <a href="https://www.reddit.com/r/unixporn/comments/e65cb1/ticwatch_pro_launching_scripts_from_smartwatch/">here</a>.</li>
+</ul>
+<h2 id="launching-scripts-from-an-android-device">Launching scripts from an Android device</h2>
+<p>Before you can launch scripts from a smartwatch, you need to be able to launch scripts from a smartphone. The instructions below are for an arch linux based distribution running i3WM, but there are plenty of guides on the internet - just search for &ldquo;How to install KDEConnect on &lt;insert your distro here&gt;.&rdquo;</p>
+<ol>
+<li>Install KDEConnect on your Linux machine with <code>sudo pacman -Syu kdeconnect</code></li>
+<li>Add <code>exec --no-startup-id /usr/lib/kdeconnectd</code> to your i3 config</li>
+<li>Restart your i3 session</li>
+<li>Download the kdeconnect app on your android device. Open it.</li>
+<li>Open up the kdeconnect application on Linux and pair to your android device.</li>
+<li>Add commands that you want to run. Change other settings as you please.</li>
+</ol>
+<p>At this point, you should be able to run commands from your phone. Consider adding the KDEConnect command widget to your android home screen. If you don&rsquo;t know what I&rsquo;m talking about, Google &ldquo;android widgets&rdquo; or something like that.</p>
+<h2 id="launching-scripts-from-wear-os-smartwatch">Launching scripts from Wear OS smartwatch</h2>
+<ul>
+<li>I could only figure out how to launch scripts from a smartwatch by using Tasker, which costs $3.49. It&rsquo;s a pretty cool app though with tons of functionality, so it&rsquo;s a fair deal. You might have luck with free alternative android applications, such as Automate or MacroDroid. Here&rsquo;s the Tasker strategy:</li>
+</ul>
+<ol>
+<li>Download Tasker from Google Play</li>
+<li>For each KDEConnect command that you want on your watch (a maximum of 3):
+<ol>
+<li>Copy the command URL by pressing and holding the command</li>
+<li>Go to the tasks tab on Tasker</li>
+<li>Add the following action: Net -&gt; Browse URL. Paste your URL in the prompt.</li>
+<li>Click the add button and name the task whatever you want it to be</li>
+</ol>
+</li>
+<li>Once you have your tasks ready, add another task that will serve as the notification dialogue
+<ol>
+<li>Add the following action: Alert -&gt; Notify</li>
+<li>Fill out title and optionally the text, add notification icon, etc. Make sure that the notification is not set to permanent. At the bottom of the screen, you&rsquo;ll see &ldquo;Actions.&rdquo; Add your tasks from the previous step (the KDEConnect commands) here.</li>
+<li>At the bottom of the screen, you&rsquo;ll see &ldquo;Actions.&rdquo; Add your tasks from the previous step (the KDEConnect commands) here.</li>
+<li>Repeat 1-3 for each of your KDEConnect command tasks.</li>
+</ol>
+</li>
+<li>Launch the notification task in Tasker by clicking on its name under the Tasks tab and hitting the play button. This will send it to your watch&rsquo;s notification screen.</li>
+</ol>
+    </div>
+    <div class="info post_meta">
+      <time datetime=2019-12-15T00:00:00Z class="date">Sunday, December 15, 2019</time>
+      
+        <ul class="tags">
+        
+          <li> <a href="tags/linux">Linux</a> </li>
+        
+          <li> <a href="tags/watch">watch</a> </li>
+        
+          <li> <a href="tags/bash">bash</a> </li>
+        
+          <li> <a href="tags/reddit">reddit</a> </li>
+        
+        </ul>
+      
+      
+    </div>
+    <div class="clearfix"></div>
+  </article>
+	
+		<div class="other_posts">
+			
+			
+			<a href="/posts/dunst/" class="next">Dunst Action</a>
+			
+		</div>
+		<aside id="comments">
+</aside>
+
+	
+</section>
+
+        <a id="back_to_top" title="Go To Top" href="#">
+  <span>
+    <svg viewBox="0 0 24 24">
+      <path fill="none" d="M0 0h24v24H0z"></path>
+      <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"></path>
+    </svg>
+  </span>
+</a>
+
+        <footer id="footer">
+  <p>
+    <span>&copy; 2020 <a href="" title="Jacob Rodal">Jacob Rodal</a> </span>
+  </p>
+
+  <script src="/js/main.min.eac174914a2c8d5b3cc7d2f766c41a23844a384c95187d52847b0b2e8c2b77a1.js" integrity="sha256-6sF0kUosjVs8x9L3ZsQaI4RKOEyVGH1ShHsLLowrd6E=" crossorigin="anonymous" async></script>
+</footer>
+
+    </body>
+</html>
