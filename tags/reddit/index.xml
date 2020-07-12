@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>reddit on Jacob Rodal</title>
-    <link>/tags/reddit/</link>
+    <link>https://jrodal98.github.io/blog/tags/reddit/</link>
     <description>Recent content in reddit on Jacob Rodal</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Jacob Rodal</copyright>
     <lastBuildDate>Sun, 15 Dec 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/reddit/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jrodal98.github.io/blog/tags/reddit/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Launching Scripts from a Smartwatch</title>
-      <link>/posts/watch-scripts/</link>
+      <link>https://jrodal98.github.io/blog/posts/watch-scripts/</link>
       <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/posts/watch-scripts/</guid>
+      <guid>https://jrodal98.github.io/blog/posts/watch-scripts/</guid>
       <description>&lt;p&gt;This article explains how to execute shell commands on a Linux computer from an android smartphone and a WearOS smartwatch.&lt;/p&gt;</description>
     </item>
     

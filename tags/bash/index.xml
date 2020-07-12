@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>bash on Jacob Rodal</title>
-    <link>/tags/bash/</link>
+    <link>https://jrodal98.github.io/blog/tags/bash/</link>
     <description>Recent content in bash on Jacob Rodal</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Jacob Rodal</copyright>
     <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/bash/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jrodal98.github.io/blog/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Dunst Action</title>
-      <link>/posts/dunst/</link>
+      <link>https://jrodal98.github.io/blog/posts/dunst/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>/posts/dunst/</guid>
+      <guid>https://jrodal98.github.io/blog/posts/dunst/</guid>
       <description>&lt;p&gt;A discussion on my Dunst screenshot actions, which include OCR, uploading to 0x0.st, deletion, renaming, and movement to/from clipboard&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Launching Scripts from a Smartwatch</title>
-      <link>/posts/watch-scripts/</link>
+      <link>https://jrodal98.github.io/blog/posts/watch-scripts/</link>
       <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>/posts/watch-scripts/</guid>
+      <guid>https://jrodal98.github.io/blog/posts/watch-scripts/</guid>
       <description>&lt;p&gt;This article explains how to execute shell commands on a Linux computer from an android smartphone and a WearOS smartwatch.&lt;/p&gt;</description>
     </item>
     
