@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <title>
+    Dropdown/Scratchpad Terminals with i3 | Jacob Rodal
+  </title>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/favicon-16x16.png" />
+  <link rel="manifest" href="/blog/manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/modern-normalize@0.6.0/modern-normalize.css"
+  />
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/blog/style.min.f7761d111b74dd5c07f0111decee92938c12abc42e0fd319e1a07483e248b54e.css" integrity="sha256-93YdERt03VwH8BEd7O6Sk4wSq8QuD9MZ4aB0g&#43;JItU4=" />
+
+  
+  
+    
+  
+</head>
+
+    <body>
+        <header id="header">
+  <div class="header_container">
+    <h1 class="sitetitle">
+      <a href="/blog/" title="Jacob Rodal">Jacob Rodal</a>
+    </h1>
+    <nav class="navbar">
+      <ul>
+        <li><a href="/blog/">Home</a></li>
+        
+          <li>
+            <a href="/blog/tags/">
+              
+              <span>Tags</span>
+            </a>
+          </li>
+        
+          <li>
+            <a href="/blog/archives/">
+              
+              <span>Archives</span>
+            </a>
+          </li>
+        
+      </ul>
+    </nav>
+  </div>
+</header>
+
+        
+<section id="main">
+  <article class="post content">
+    <h2 class="title">Dropdown/Scratchpad Terminals with i3</h2>
+    <div class="post_content">
+      <p>Tutorial on implementing dropdown terminals in i3 using the scratchpad feature</p>
+<h2 id="examples">Examples</h2>
+<div align="center"
+<figure>
+    <img src="/img/dropdown_term.png"/>
+    <figcaption>
+        <h4>Neofetch</h4>
+    </figcaption>
+</figure>
+</div>
+<div align="center"
+<figure>
+    <img src="/img/spotifytui.png"/>
+    <figcaption>
+        <h4>Spotifytui</h4>
+    </figcaption>
+</figure>
+</div>
+<h2 id="implementation">Implementation</h2>
+<h3 id="i3-configuration">i3 configuration</h3>
+<pre><code># #---Dropdown Windows---# #
+# # General dropdown window traits. The order can matter.
+for_window [instance=&quot;dropdown_*&quot;] floating enable
+for_window [instance=&quot;dropdown_*&quot;] move scratchpad
+for_window [instance=&quot;dropdown_*&quot;] sticky enable
+for_window [instance=&quot;dropdown_*&quot;] scratchpad show
+for_window [instance=&quot;dropdown_*&quot;] move position center
+for_window [instance=&quot;dropdown_*&quot;] resize set 800 600
+for_window [instance=&quot;dropdown_*&quot;] border pixel 1
+
+for_window [instance=&quot;dropdown_spt&quot;] resize set 1200 600
+for_window [instance=&quot;dropdown_taskell&quot;] resize set 1200 600
+
+bindsym $mod+t exec --no-startup-id $HOME/.config/i3/toggle-dropdowns.sh terminal
+bindsym $mod+Shift+t exec --no-startup-id $HOME/.config/i3/toggle-dropdowns.sh taskell
+bindsym $mod+n exec --no-startup-id $HOME/.config/i3/toggle-dropdowns.sh notepad
+
+# Spotify controls
+bindsym $mod+Up exec --no-startup-id $HOME/.config/i3/toggle-dropdowns.sh spt
+</code></pre><p>The for_window portion of the configuration essentially sets a series of rules for any windows with the class <code>&quot;dropdown_*&quot;</code>, where <code>&quot;*&quot;</code> is the wildcard that means &ldquo;anything&rdquo;. I have an additional resize rule for my spotify-tui dropdown and my taskell dropdown.</p>
+<p>I binded my drop down terminals below the window rules. Each of the bindings is associated with the <code>toggle-dropdowns.sh</code> script, which essentially launches the terminals if they haven&rsquo;t already been launched and toggles whether or not they are showing. The code is rather inelegant and duplicate code could certainly be reduced, but I got a bit lazy when I was writing it :). The code is in the section below.</p>
+<h3 id="toggle-dropdownssh"><code>toggle-dropdowns.sh</code></h3>
+<pre><code>#!/usr/bin/env zsh
+source ~/.zshrc
+case $1 in
+    spt)
+        if  [ &quot;_$(xdotool search --classname &quot;dropdown_spt&quot; | head -1)&quot;  = &quot;_&quot; ]; then
+            systemctl --user restart spotifyd.service
+            $TERMINAL --class dropdown_spt -e spt &amp;
+            sleep .1
+            i3-msg &quot;[instance=&quot;dropdown_spt&quot;] move position center&quot;
+        else
+            i3-msg &quot;[instance=&quot;dropdown_spt&quot;] scratchpad show; [instance=&quot;dropdown_spt&quot;] move position center&quot;
+        fi
+        ;;
+    terminal)
+        if  [ &quot;_$(xdotool search --classname &quot;dropdown_term&quot; | head -1)&quot;  = &quot;_&quot; ]; then
+            $TERMINAL --class dropdown_term &amp;
+            sleep .1
+            i3-msg &quot;[instance=&quot;dropdown_term&quot;] move position center&quot;
+        else
+            i3-msg &quot;[instance=&quot;dropdown_term&quot;] scratchpad show; [instance=&quot;dropdown_term&quot;] move position center&quot;
+        fi
+        ;;
+    taskell)
+        if  [ &quot;_$(xdotool search --classname &quot;dropdown_taskell&quot; | head -1)&quot;  = &quot;_&quot; ]; then
+            $TERMINAL --class dropdown_taskell -e taskell $HOME/todo.md &amp;
+            sleep .1
+            i3-msg &quot;[instance=&quot;dropdown_taskell&quot;] move position center&quot;
+        else
+            i3-msg &quot;[instance=&quot;dropdown_taskell&quot;] scratchpad show; [instance=&quot;dropdown_taskell&quot;] move position center&quot;
+        fi
+        ;;
+    notepad)
+        if  [ &quot;_$(xdotool search --classname &quot;dropdown_notepad&quot; | head -1)&quot;  = &quot;_&quot; ]; then
+            $TERMINAL --class dropdown_notepad -e ~/.config/i3/run-notepad &amp;
+            sleep .1
+            i3-msg &quot;[instance=&quot;dropdown_notepad&quot;] move position center&quot;
+        else
+            i3-msg &quot;[instance=&quot;dropdown_notepad&quot;] scratchpad show; [instance=&quot;dropdown_notepad&quot;] move position center&quot;
+        fi
+        ;;
+    *)
+        notify-send -i $HOME/.local/share/icons/dunst_icons/icons8-high-importance-48.png &quot;Error&quot; &quot;Invalid option passed to toggle-dropdowns script.&quot;
+        ;;
+esac
+</code></pre>
+    </div>
+    <div class="info post_meta">
+      <time datetime=2020-02-14T00:00:00Z class="date">Friday, February 14, 2020</time>
+      
+        <ul class="tags">
+        
+          <li> <a href="/blog/tags/linux">Linux</a> </li>
+        
+          <li> <a href="/blog/tags/i3">i3</a> </li>
+        
+          <li> <a href="/blog/tags/terminal">terminal</a> </li>
+        
+        </ul>
+      
+      
+    </div>
+    <div class="clearfix"></div>
+  </article>
+	
+		<div class="other_posts">
+			
+			<a href="/blog/posts/dunst/" class="prev">Dunst Action</a>
+			
+			
+		</div>
+		<aside id="comments">
+</aside>
+
+	
+</section>
+
+        <a id="back_to_top" title="Go To Top" href="#">
+  <span>
+    <svg viewBox="0 0 24 24">
+      <path fill="none" d="M0 0h24v24H0z"></path>
+      <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"></path>
+    </svg>
+  </span>
+</a>
+
+        <footer id="footer">
+  <p>
+    <span>&copy; 2020 <a href="/blog/" title="Jacob Rodal">Jacob Rodal</a> </span>
+  </p>
+
+  <script src="/blog/js/main.min.eac174914a2c8d5b3cc7d2f766c41a23844a384c95187d52847b0b2e8c2b77a1.js" integrity="sha256-6sF0kUosjVs8x9L3ZsQaI4RKOEyVGH1ShHsLLowrd6E=" crossorigin="anonymous" async></script>
+</footer>
+
+    </body>
+</html>
