@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Jacob Rodal</copyright>
-    <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 11 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/bash/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>File sharing from the command line</title>
+      <link>/posts/file-sharing-from-cml/</link>
+      <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/file-sharing-from-cml/</guid>
+      <description>&lt;p&gt;An overview of &lt;a href=&#34;https://0x0.st/&#34;&gt;0x0.st&lt;/a&gt; and &lt;a href=&#34;https://transfer.sh/&#34;&gt;transfer.sh&lt;/a&gt;, two popular file sharing services that you can use for free from the command line.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Dunst Action</title>
