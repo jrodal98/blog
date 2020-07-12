@@ -2,58 +2,58 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Jacob Rodal</title>
-    <link>https://jrodal98.github.io/blog/tags/</link>
+    <link>/blog/tags/</link>
     <description>Recent content in Tags on Jacob Rodal</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Jacob Rodal</copyright>
     <lastBuildDate>Mon, 20 Jan 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://jrodal98.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>bash</title>
-      <link>https://jrodal98.github.io/blog/tags/bash/</link>
+      <link>/blog/tags/bash/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jrodal98.github.io/blog/tags/bash/</guid>
+      <guid>/blog/tags/bash/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Dunst</title>
-      <link>https://jrodal98.github.io/blog/tags/dunst/</link>
+      <link>/blog/tags/dunst/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jrodal98.github.io/blog/tags/dunst/</guid>
+      <guid>/blog/tags/dunst/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Linux</title>
-      <link>https://jrodal98.github.io/blog/tags/linux/</link>
+      <link>/blog/tags/linux/</link>
       <pubDate>Mon, 20 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jrodal98.github.io/blog/tags/linux/</guid>
+      <guid>/blog/tags/linux/</guid>
       <description></description>
     </item>
     
     <item>
       <title>reddit</title>
-      <link>https://jrodal98.github.io/blog/tags/reddit/</link>
+      <link>/blog/tags/reddit/</link>
       <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jrodal98.github.io/blog/tags/reddit/</guid>
+      <guid>/blog/tags/reddit/</guid>
       <description></description>
     </item>
     
     <item>
       <title>watch</title>
-      <link>https://jrodal98.github.io/blog/tags/watch/</link>
+      <link>/blog/tags/watch/</link>
       <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jrodal98.github.io/blog/tags/watch/</guid>
+      <guid>/blog/tags/watch/</guid>
       <description></description>
     </item>
     
