@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="format-detection" content="telephone=no" />
+
+  <title>
+    How to Deploy a Rocket Rust Web Application on VPS | Jacob Rodal
+  </title>
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+
+  
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/modern-normalize@0.6.0/modern-normalize.css"
+  />
+
+  
+  
+  
+  
+  <link rel="stylesheet" href="/style.min.f7761d111b74dd5c07f0111decee92938c12abc42e0fd319e1a07483e248b54e.css" integrity="sha256-93YdERt03VwH8BEd7O6Sk4wSq8QuD9MZ4aB0g&#43;JItU4=" />
+
+  
+  
+    
+  
+</head>
+
+    <body>
+        <header id="header">
+  <div class="header_container">
+    <h1 class="sitetitle">
+      <a href="/" title="Jacob Rodal">Jacob Rodal</a>
+    </h1>
+    <nav class="navbar">
+      <ul>
+        <li><a href="/">Home</a></li>
+        
+          <li>
+            <a href="/tags/">
+              
+              <span>Tags</span>
+            </a>
+          </li>
+        
+          <li>
+            <a href="/archives/">
+              
+              <span>Archives</span>
+            </a>
+          </li>
+        
+      </ul>
+    </nav>
+  </div>
+</header>
+
+        
+<section id="main">
+  <article class="post content">
+    <h2 class="title">How to Deploy a Rocket Rust Web Application on VPS</h2>
+    <div class="post_content">
+      <p>I came across a few guides on the internet when trying to deploy a rocket application to a vps but wasn&rsquo;t pleased with the level of detail given. I had to consult two or three different guides before I was successful.</p>
+<p>This post should hopefully be sufficient for anybody with no experience using nginx, letsencrypt, and systemd.</p>
+<h2 id="step-1-acquire-a-vps-and-a-domain">Step 1: Acquire a VPS and a Domain</h2>
+<p>First, you need to figure out where you want to deploy your application. I chose <a href="https://virmach.com/">virmach</a> because they offer a $1 linux vps and they accept bitcoin. It gives you 256 MB of memory, 10 GB of disk space, and 500 GB monthly bandwidth, which is more than enough for my needs.</p>
+<p>If your VPS doesn&rsquo;t give you a free domain, or if you want a custom domain, you&rsquo;ll probably need to buy one. I got mine from <a href="https://www.namecheap.com/">namecheap</a> because I was able to get an xyz domain name for $1, but it doesn&rsquo;t matter where you get yours. You can get a free .tk domain name at <a href="http://www.dot.tk/en/index.html?lang=en">dot.tk</a>, if you don&rsquo;t care about the unorthodox extension.</p>
+<p>Virmach and Namecheap: if you&rsquo;re reading this, you&rsquo;re welcome. Please sponsor me.</p>
+<h2 id="step-2-domain-settings">Step 2: Domain Settings</h2>
+<p>Next, you&rsquo;ll need to point your domain to your server. You do this by creating an A record that points to the ip address allocated to your VPS. You should also create a CNAME record if you want to be able to prepend www to your domain name.</p>
+<p>This will probably appear in the DNS settings for your domain at your domain registrar. For me, I went to namecheap and then went to &ldquo;advanced dns&rdquo; for my domain. I added the records like so:</p>
+<div align="center"
+<figure>
+<img src="/img/dns_records.png"/>
+</figure>
+</div>
+<p>where <strong>IP Address</strong> is the static IP address of your VPS and <strong>Target</strong> is your domain name.</p>
+<p>It might take awhile for your changes to propagate across the internet, so be patient.</p>
+<h2 id="step-3-download-software-on-vps">Step 3: Download Software on VPS</h2>
+<p>I&rsquo;m going to assume that you&rsquo;re running something based on debian for simplicity. Downloading and updating packages with other distros will be left as an exercise to the reader.</p>
+<p>First, update the list of available packages and then upgrade to the latest versions:</p>
+<pre><code>apt update &amp;&amp; apt upgrade
+</code></pre><pre><code>apt install curl git gcc nginx certbot python-certbot-nginx
+</code></pre><p>If you have issues downloading <code>python-certbox-nginx</code>, try running <code>apt install software-properties-common dirmngr --install-recommends</code> followed by <code>add-apt-repository ppa:certbot/certbot</code>. Then, try reinstalling <code>python-certbot-nginx</code>.</p>
+<p>Lastly, install rust with the following command:</p>
+<pre><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+</code></pre><p>You should run <code>source $HOME/.cargo/env</code> and <code>rustup override set nightly</code> to prepare the rocket rust environment.</p>
+<p>If you run into a &ldquo;RUSTUP_UNPACK_RAM must be larger than X&rdquo; error, try running <code>export RUSTUP_UNPACK_RAM=X</code> and trying the rust install again.</p>
+<h2 id="step-4-compile-your-application-and-create-a-systemd-service">Step 4: Compile your Application and Create a Systemd Service</h2>
+<p>Get your source code onto your machine. I&rsquo;m assuming you know how to do this if you&rsquo;re using rust. If git isn&rsquo;t an option, research rsync to copy files from your host machine to your vps.</p>
+<p><code>cd</code> into your project directory (created with cargo) and compile your project</p>
+<pre><code>cd YOUR_PROJECT_DIR
+cargo build --release
+</code></pre><p>Next, create a systemd file named /etc/systemd/system/YOUR_DOMAIN.service:</p>
+<pre><code>[Unit]
+Description=Put a description here
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/path/to/project/dir
+Environment=&quot;ROCKET_ENV=prod&quot;
+Environment=&quot;ROCKET_ADDRESS=127.0.0.1&quot;
+Environment=&quot;ROCKET_PORT=8000&quot;
+Environment=&quot;ROCKET_LOG=critical&quot;
+ExecStart=/path/to/project/dir/target/release/YOUR_APPLICATION_NAME
+
+[Install]
+WantedBy=multi-user.target
+</code></pre><p>You might not want to use root as the user, depending on your vps. Research systemd and modify it as desired.</p>
+<p>Start your service with <code>systemctl start YOUR_DOMAIN.service</code> and enable it to run on system startup with <code>systemctl enable YOUR_DOMAIN.service</code>. Your application should now be running - check with <code>systemctl status YOUR_DOMAIN.service</code></p>
+<h2 id="step-5-setup-nginx-webserver">Step 5: Setup Nginx Webserver</h2>
+<p>Put something like this in /etc/nginx/sites-available/YOUR_DOMAIN:</p>
+<pre><code>server {
+    listen 80;
+    listen [::]:80;
+
+    server_name YOUR_DOMAIN_NAME www.YOUR_DOMAIN_NAME;
+
+    location / {
+        # Forward requests to rocket
+        proxy_pass http://127.0.0.1:8000;
+    }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+
+    server_name YOUR_DOMAIN_NAME www.YOUR_DOMAIN_NAME;
+
+    location / {
+        # Forward requests to rocket
+        proxy_pass http://127.0.0.1:8000;
+    }
+}
+</code></pre><p>Check your syntax with <code>nginx -t</code>.</p>
+<p>Make sure to delete the default nginx file with <code>rm /etc/nginx/sites-available/default</code>.</p>
+<p>Reload nginx with <code>systemctl reload nginx</code>. Navigate to your domain on your browser with <code>http://YOUR_DOMAIN_NAME</code>. Verify that it&rsquo;s working.</p>
+<p>If everything is working, then go ahead and setup https with <code>certbot --nginx</code> and follow the instructions. If it asks you if you want to redirect http to https, you absolutely should.</p>
+<p>Reload nginx with <code>systemctl reload nginx</code>. Navigate to your domain on your browser with <code>https://YOUR_DOMAIN_NAME</code>. Verify that it&rsquo;s working.</p>
+<p>At this point, you&rsquo;re basically done! I recommend setting up a cron job to auto renew your https certificates. Run <code>crontab -e</code> and insert this to run the certbot renew script at the first of each month:</p>
+<pre><code>1 1 1 * * certbot renew
+</code></pre><h2 id="optional-safer-and-easier-sshing-into-your-vps">Optional: Safer and Easier SSHing into your VPS</h2>
+<p>I like sshing with RSA keys because you don&rsquo;t have to enter a password. If you don&rsquo;t already have a keypair, run the following commands on your host machine (the machine you ssh from)</p>
+<pre><code>ssh-keygen
+ssh-copy-id USER@VPS_IP_ADDR
+</code></pre><p>Use all of the defaults and don&rsquo;t add a password to your key, unless you want to have to type your password to use it. I&rsquo;m not super concerned about putting a password on my key because I&rsquo;ll have bigger things to worry about if someone ever got my key to begin with.</p>
+<p>Verify that you can ssh into your machine without a password by running <code>ssh USER@VPS_IP_ADDR</code>.</p>
+<p>You can create an ssh profile by editing ~/.ssh/config on your host machine like so:</p>
+<pre><code>Host PROFILE_NAME
+    HostName VPS_IP_ADDR
+    User USER
+    IdentityFile ~/.ssh/id_rsa
+</code></pre><p>which will allow you to ssh into your VPS by running <code>ssh PROFILE_NAME</code>.</p>
+<p>I also like to disable text passwords to my remote machines so that only I can access them (or anyone with a key). If you also want to do this, set the following options in <code>etc/ssh/sshd_config</code>:</p>
+<pre><code>/etc/ssh/sshd_config
+PassWordAuthentication no
+UsePam no
+ChallengeResponseAuthentication no
+</code></pre>
+    </div>
+    <div class="info post_meta">
+      <time datetime=2020-08-15T00:00:00Z class="date">Saturday, August 15, 2020</time>
+      
+        <ul class="tags">
+        
+          <li> <a href="/tags/rocket">rocket</a> </li>
+        
+          <li> <a href="/tags/rust">rust</a> </li>
+        
+          <li> <a href="/tags/vps">vps</a> </li>
+        
+          <li> <a href="/tags/nginx">nginx</a> </li>
+        
+          <li> <a href="/tags/linux">linux</a> </li>
+        
+          <li> <a href="/tags/ssh">ssh</a> </li>
+        
+        </ul>
+      
+      
+    </div>
+    <div class="clearfix"></div>
+  </article>
+	
+		<div class="other_posts">
+			
+			<a href="/posts/file-sharing-from-cml/" class="prev">File sharing from the command line</a>
+			
+			
+		</div>
+		<aside id="comments">
+</aside>
+
+	
+</section>
+
+        <a id="back_to_top" title="Go To Top" href="#">
+  <span>
+    <svg viewBox="0 0 24 24">
+      <path fill="none" d="M0 0h24v24H0z"></path>
+      <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"></path>
+    </svg>
+  </span>
+</a>
+
+        <footer id="footer">
+  <p>
+    <span>&copy; 2020 <a href="/" title="Jacob Rodal">Jacob Rodal</a> </span>
+  </p>
+
+  <script src="/js/main.min.eac174914a2c8d5b3cc7d2f766c41a23844a384c95187d52847b0b2e8c2b77a1.js" integrity="sha256-6sF0kUosjVs8x9L3ZsQaI4RKOEyVGH1ShHsLLowrd6E=" crossorigin="anonymous" async></script>
+</footer>
+
+    </body>
+</html>
