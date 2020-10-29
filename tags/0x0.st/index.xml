@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Jacob Rodal</copyright>
-    <lastBuildDate>Sat, 11 Jul 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/0x0.st/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 11 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/0x0.st/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>File sharing from the command line</title>
       <link>/posts/file-sharing-from-cml/</link>

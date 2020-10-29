@@ -6,10 +6,6 @@
     <description>Recent content in Archives on Jacob Rodal</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>Jacob Rodal</copyright>
-    
-	<atom:link href="/archives/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>Jacob Rodal</copyright><atom:link href="/archives/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

@@ -7,17 +7,49 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Jacob Rodal</copyright>
-    <lastBuildDate>Sat, 15 Aug 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 29 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>compton</title>
+      <link>/tags/compton/</link>
+      <pubDate>Thu, 29 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/compton/</guid>
+      <description></description>
+    </item>
     
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
-    
+    <item>
+      <title>i3</title>
+      <link>/tags/i3/</link>
+      <pubDate>Thu, 29 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/i3/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Linux</title>
       <link>/tags/linux/</link>
-      <pubDate>Sat, 15 Aug 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 29 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>picom</title>
+      <link>/tags/picom/</link>
+      <pubDate>Thu, 29 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/picom/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>qtile</title>
+      <link>/tags/qtile/</link>
+      <pubDate>Thu, 29 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/qtile/</guid>
       <description></description>
     </item>
     
@@ -90,15 +122,6 @@
       <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/transfer.sh/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>i3</title>
-      <link>/tags/i3/</link>
-      <pubDate>Fri, 14 Feb 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/i3/</guid>
       <description></description>
     </item>
     
